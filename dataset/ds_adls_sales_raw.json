@@ -1,0 +1,19 @@
+{
+	"name": "ds_adls_sales_raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_gen_2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "raw/dm",
+				"fileSystem": "cr-clinictrial"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
