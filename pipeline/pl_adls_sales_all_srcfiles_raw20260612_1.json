@@ -1,0 +1,61 @@
+{
+	"name": "pl_adls_sales_all_srcfiles_raw20260612_1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_adls_salesfiles_raw",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "sourcefiles/dm",
+							"wildcardFileName": "*Sales*.csv",
+							"deleteFilesAfterCompletion": false
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "PreserveHierarchy"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_adls_sales_csv",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_adls_sales_raw",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "srcfiles_raw"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-07-15T18:41:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
