@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-clinictrial-dev"
+		},
+		"ls_adls_gen_2_accountKey": {
+			"value": ""
+		},
+		"ls_azuresql_clintrial_password": {
+			"value": ""
+		},
+		"ls_adls_gen_2_properties_typeProperties_url": {
+			"value": "https://stclinictrialdev.dfs.core.windows.net/"
+		},
+		"ls_azuresql_clintrial_properties_typeProperties_server": {
+			"value": "sql-clinictrial-dev.database.windows.net"
+		},
+		"ls_azuresql_clintrial_properties_typeProperties_database": {
+			"value": "sqldb_clintrial_dev"
+		},
+		"ls_azuresql_clintrial_properties_typeProperties_userName": {
+			"value": "CloudSA52ad93c1"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
