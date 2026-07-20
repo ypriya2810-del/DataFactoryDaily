@@ -58,7 +58,7 @@
 			}
 		],
 		"folder": {
-			"name": "azuresql_adls_raw_load"
+			"name": "practice_files/azuresql_adls_raw_load"
 		},
 		"annotations": [],
 		"lastPublishTime": "2026-07-18T19:03:20Z"
