@@ -1,0 +1,29 @@
+{
+	"name": "ls_sqlserver_param",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"pLsServerName": {
+				"type": "string"
+			},
+			"pLsDatabasename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "@{linkedService().pLsServerName}",
+			"database": "@{linkedService().pLsDatabasename}",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "adf_login",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJjMWVhNjJiNy0zMmM0LTRiMzctYmQyZS1kNDlhNjVlYjUzNGEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "shir-local-compute",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
