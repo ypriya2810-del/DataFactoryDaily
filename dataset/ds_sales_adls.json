@@ -1,0 +1,23 @@
+{
+	"name": "ds_sales_adls",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_gen_2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "sourcefiles/sales",
+				"fileSystem": "cr-clinictrial"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
