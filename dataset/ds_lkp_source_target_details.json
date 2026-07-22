@@ -1,0 +1,42 @@
+{
+	"name": "ds_lkp_source_target_details",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_gen_2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Source_Target_Parameterization.json",
+				"folderPath": "lookupfiles",
+				"fileSystem": "cr-clinictrial"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"SourceContainerName": {
+					"type": "string"
+				},
+				"SourceFolderPath": {
+					"type": "string"
+				},
+				"SourceFilename": {
+					"type": "string"
+				},
+				"TargetContainerName": {
+					"type": "string"
+				},
+				"TargetFolderPath": {
+					"type": "string"
+				},
+				"TargetFilename": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
