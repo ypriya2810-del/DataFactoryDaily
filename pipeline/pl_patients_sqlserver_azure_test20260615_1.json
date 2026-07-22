@@ -1,0 +1,27 @@
+{
+	"name": "pl_patients_sqlserver_azure_test20260615_1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_pl_patients_sqlserver_azure_test",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"folder": {
+			"name": "practice_files/sqlserver_azuresqldb_load20260615"
+		},
+		"annotations": []
+	}
+}
