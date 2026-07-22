@@ -1,0 +1,128 @@
+{
+	"name": "pl_sqlserver_source_sink_param_4",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_sourcce_target_parameter",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sqlserver_source_table_param",
+						"type": "DatasetReference",
+						"parameters": {
+							"pDsSourceServerName": {
+								"value": "@pipeline().parameters.pPlSourceServerName",
+								"type": "Expression"
+							},
+							"pDsSourceDatabasename": {
+								"value": "@pipeline().parameters.pPlSourceDatabasename",
+								"type": "Expression"
+							},
+							"pDsSourceSchemaName": {
+								"value": "@pipeline().parameters.pPlSourceSchemaName",
+								"type": "Expression"
+							},
+							"pDsSourceTableName": {
+								"value": "@pipeline().parameters.pPlSourceTableName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sqlserver_target_table_param",
+						"type": "DatasetReference",
+						"parameters": {
+							"pDsTargetServerName": {
+								"value": "@pipeline().parameters.pPlTargetServerName",
+								"type": "Expression"
+							},
+							"pDsTargetDatabasename": {
+								"value": "@pipeline().parameters.pPlTargetDatabasename",
+								"type": "Expression"
+							},
+							"pDsTargetSchemaName": {
+								"value": "@pipeline().parameters.pPlTargetSchemaName",
+								"type": "Expression"
+							},
+							"pDsTargetTableName": {
+								"value": "@pipeline().parameters.pPlTargetTableName",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"pPlSourceServerName": {
+				"type": "string",
+				"defaultValue": "localhost\\SQLEXPRESS"
+			},
+			"pPlSourceDatabasename": {
+				"type": "string",
+				"defaultValue": "dev_healthConnect_raw"
+			},
+			"pPlSourceSchemaName": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"pPlSourceTableName": {
+				"type": "string",
+				"defaultValue": "raw_patients"
+			},
+			"pPlTargetServerName": {
+				"type": "string",
+				"defaultValue": "localhost\\SQLEXPRESS"
+			},
+			"pPlTargetDatabasename": {
+				"type": "string",
+				"defaultValue": "dev_HealthConnect_cleansed"
+			},
+			"pPlTargetSchemaName": {
+				"type": "string",
+				"defaultValue": "adf_cleansed"
+			},
+			"pPlTargetTableName": {
+				"type": "string",
+				"defaultValue": "cleansed_patients"
+			}
+		},
+		"folder": {
+			"name": "practice_files/Parameters20260626"
+		},
+		"annotations": []
+	}
+}

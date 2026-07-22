@@ -1,0 +1,46 @@
+{
+	"name": "ds_sqlserver_target_table_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqlserver_param",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"pLsServerName": {
+					"value": "@dataset().pDsTargetServerName",
+					"type": "Expression"
+				},
+				"pLsDatabasename": {
+					"value": "@dataset().pDsTargetDatabasename",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"pDsTargetServerName": {
+				"type": "string"
+			},
+			"pDsTargetDatabasename": {
+				"type": "string"
+			},
+			"pDsTargetSchemaName": {
+				"type": "string"
+			},
+			"pDsTargetTableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().pDsTargetSchemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().pDsTargetTableName",
+				"type": "Expression"
+			}
+		}
+	}
+}
