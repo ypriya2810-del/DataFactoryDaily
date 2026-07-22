@@ -1,0 +1,39 @@
+{
+	"name": "ds_adls_bin_sourcefiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_gen_2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"pDsSourceContainerName": {
+				"type": "string"
+			},
+			"pDsSourceFolderPath": {
+				"type": "string"
+			},
+			"pDsSourcefilename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().pDsSourcefilename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().pDsSourceFolderPath",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().pDsSourceContainerName",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
