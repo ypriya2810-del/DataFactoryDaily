@@ -82,7 +82,7 @@
 								},
 								{
 									"name": "Destination",
-									"value": "@{item().LandingContainerName}/@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))\n}/@{concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')\n}"
+									"value": "@{item().LandingContainerName}/@{concat(concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd')), '\n')}/@{concat(concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet'), '\n')}"
 								}
 							],
 							"typeProperties": {
