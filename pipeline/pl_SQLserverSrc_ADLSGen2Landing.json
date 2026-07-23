@@ -150,8 +150,6 @@
 						{
 							"name": "LookupGetMaxMetaData",
 							"type": "Lookup",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Copydata_sqlserver_landing",
@@ -205,8 +203,6 @@
 						{
 							"name": "Stored procedureUpdtMxModifiedDt",
 							"type": "SqlServerStoredProcedure",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "LookupGetMaxMetaData",
