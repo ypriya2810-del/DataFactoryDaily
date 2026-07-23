@@ -25,19 +25,19 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"pDsSourceServerName": {
-								"value": "@pipeline().parameters.pPlServerName",
+								"value": "localhost\\SQLEXPRESS",
 								"type": "Expression"
 							},
 							"pDsSourceDatabasename": {
-								"value": "@pipeline().parameters.pPlDatabaseName",
+								"value": "dev_clintrail_edc_src",
 								"type": "Expression"
 							},
 							"pDsSourceSchemaName": {
-								"value": "@pipeline().parameters.pPlSchemaName",
+								"value": "edcsrcmetadata",
 								"type": "Expression"
 							},
 							"pDsSourceTableName": {
-								"value": "@pipeline().parameters.pPlTableName",
+								"value": "srcEdcClintrailToLandControl",
 								"type": "Expression"
 							}
 						}
