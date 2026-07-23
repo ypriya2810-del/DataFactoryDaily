@@ -34,7 +34,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEach",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -70,7 +70,7 @@
 								},
 								{
 									"name": "Destination",
-									"value": "@{item().LandingContainerName}/@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))}/@{concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')}"
+									"value": "@{item().LandingContainerName}/@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))\n}/@{concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')\n}"
 								}
 							],
 							"typeProperties": {
@@ -136,11 +136,11 @@
 											"type": "Expression"
 										},
 										"pDsFolderName": {
-											"value": "@concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))\n",
+											"value": "@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))}\n",
 											"type": "Expression"
 										},
 										"pDsFileName": {
-											"value": "@concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')\n",
+											"value": "@{concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')}\n",
 											"type": "Expression"
 										}
 									}
@@ -220,6 +220,10 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"storedProcedureName": {
+									"value": "[edcsrcmetadata].[usp_UpdateMxWatermark]",
+									"type": "Expression"
+								},
 								"storedProcedureParameters": {
 									"MetadataId": {
 										"value": {
