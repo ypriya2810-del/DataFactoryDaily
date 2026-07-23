@@ -3,12 +3,10 @@
 	"properties": {
 		"parameters": {
 			"pLsServerName": {
-				"type": "string",
-				"defaultValue": "localhost\\SQLEXPRESS"
+				"type": "string"
 			},
 			"pLsDatabasename": {
-				"type": "string",
-				"defaultValue": "dev_clintrail_edc_src"
+				"type": "string"
 			}
 		},
 		"annotations": [],
