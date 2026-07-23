@@ -24,10 +24,22 @@
 						"referenceName": "ds_sqlserver_source_table_param",
 						"type": "DatasetReference",
 						"parameters": {
-							"pDsSourceServerName": "localhost\\SQLEXPRESS",
-							"pDsSourceDatabasename": "dev_clintrail_edc_src",
-							"pDsSourceSchemaName": "edcsrcmetadata",
-							"pDsSourceTableName": "srcEdcClintrailToLandControl"
+							"pDsSourceServerName": {
+								"value": "@pipeline().parameters.pPlServerName",
+								"type": "Expression"
+							},
+							"pDsSourceDatabasename": {
+								"value": "@pipeline().parameters.pPlDatabaseName",
+								"type": "Expression"
+							},
+							"pDsSourceSchemaName": {
+								"value": "@pipeline().parameters.pPlSchemaName",
+								"type": "Expression"
+							},
+							"pDsSourceTableName": {
+								"value": "@pipeline().parameters.pPlTableName",
+								"type": "Expression"
+							}
 						}
 					},
 					"firstRowOnly": false
@@ -76,10 +88,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
-									"sqlReaderQuery": {
-										"value": "@if(equals(item().IngestionType,'Incremental'),\n    concat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName,\n           ' WHERE ',coalesce(item().WatermarkColName,''),\n           ' > ''',coalesce(string(item().WatermarkColValue),''),''''),\n    concat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName))",
-										"type": "Expression"
-									},
+									"sqlReaderQuery": "@if(equals(item().IngestionType,'Incremental'),\nconcat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName,\n' WHERE ',coalesce(item().WatermarkColName,''),\n' > ''',coalesce(string(item().WatermarkColValue),''),''''),\nconcat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName))\n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -260,6 +269,24 @@
 				}
 			}
 		],
+		"parameters": {
+			"pPlServerName": {
+				"type": "string",
+				"defaultValue": "localhost\\SQLEXPRESS"
+			},
+			"pPlDatabaseName": {
+				"type": "string",
+				"defaultValue": "dev_clintrail_edc_src"
+			},
+			"pPlSchemaName": {
+				"type": "string",
+				"defaultValue": "edcsrcmetadata"
+			},
+			"pPlTableName": {
+				"type": "string",
+				"defaultValue": "srcEdcClintrailToLandControl"
+			}
+		},
 		"folder": {
 			"name": "dev_clintrail/SQLServerSrc_ADLSGen2Landing"
 		},
