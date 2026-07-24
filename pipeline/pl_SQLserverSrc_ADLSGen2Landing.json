@@ -48,8 +48,6 @@
 			{
 				"name": "ForEach",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "LookupSQLServerControlTable",
@@ -90,7 +88,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
-									"sqlReaderQuery": "@if(equals(item().IngestionType,'Incremental'),\nconcat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName,\n' WHERE ',coalesce(item().WatermarkColName,''),\n' > ''',coalesce(string(item().WatermarkColValue),''),''''),\nconcat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName))\n",
+									"sqlReaderQuery": {
+										"value": "@if(equals(item().IngestionType,'Incremental'),\n    concat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName,\n           ' WHERE ',coalesce(item().WatermarkColName,''),\n           ' > ''',coalesce(string(item().WatermarkColValue),''),''''),\n    concat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName))\n",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -147,11 +148,11 @@
 											"type": "Expression"
 										},
 										"pDsFolderName": {
-											"value": "@concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))\n\n\n\n\n\n",
+											"value": "@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))}\n\n\n\n\n\n",
 											"type": "Expression"
 										},
 										"pDsFileName": {
-											"value": "@{concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')}\n",
+											"value": "@{concat(item().SrcTableName,'_',formatDateTime(utcNow(),'yyyyMMddHHmmss'),'.parquet')}\n",
 											"type": "Expression"
 										}
 									}
