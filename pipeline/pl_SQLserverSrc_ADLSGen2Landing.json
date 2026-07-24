@@ -148,11 +148,11 @@
 											"type": "Expression"
 										},
 										"pDsFolderName": {
-											"value": "@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))}\n\n\n\n\n",
+											"value": "@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))}",
 											"type": "Expression"
 										},
 										"pDsFileName": {
-											"value": "@concat(item().SrcTableName,'_',formatDateTime(utcNow(),'yyyyMMddHHmmss'),'.parquet')\n",
+											"value": "@concat(item().SrcTableName,'_',formatDateTime(utcNow(),'yyyyMMddHHmmss'),'.parquet')",
 											"type": "Expression"
 										}
 									}
