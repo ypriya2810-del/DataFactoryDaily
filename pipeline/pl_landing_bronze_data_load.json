@@ -77,6 +77,10 @@
 									"srcContainerName": {
 										"value": "@item().SrcContainerName",
 										"type": "Expression"
+									},
+									"tgtCatalog": {
+										"value": "@item().TgtCatalog",
+										"type": "Expression"
 									}
 								}
 							},
