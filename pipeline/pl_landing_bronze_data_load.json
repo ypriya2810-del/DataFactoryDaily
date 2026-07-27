@@ -64,33 +64,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/landing_bronze_load/bronze_sql/03nb_landing_bronze_load",
-								"baseParameters": {
-									"domain": {
-										"value": "@item().Domain",
-										"type": "Expression"
-									},
-									"storageAccName": {
-										"value": "@item().StorageAccName",
-										"type": "Expression"
-									},
-									"srcContainerName": {
-										"value": "@item().SrcContainerName",
-										"type": "Expression"
-									},
-									"tgtCatalog": {
-										"value": "@item().TgtContainerName",
-										"type": "Expression"
-									},
-									"tgtSchema": {
-										"value": "@item().TgtSchema",
-										"type": "Expression"
-									},
-									"tgtTableName": {
-										"value": "@item().TgtTableName",
-										"type": "Expression"
-									}
-								}
+								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/landing_bronze_load/bronze_sql/03nb_landing_bronze_load"
 							},
 							"linkedServiceName": {
 								"referenceName": "ls_AzureDatabricks",
