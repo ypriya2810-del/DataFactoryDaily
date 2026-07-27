@@ -64,7 +64,13 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/landing_bronze_load/bronze_sql/03nb_landing_bronze_load"
+								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/landing_bronze_load/bronze_sql/03nb_landing_bronze_load",
+								"baseParameters": {
+									"domain": {
+										"value": "@item().Domain",
+										"type": "Expression"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "ls_AzureDatabricks",
