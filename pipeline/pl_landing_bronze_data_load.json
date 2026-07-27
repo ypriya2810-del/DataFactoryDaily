@@ -69,6 +69,14 @@
 									"domain": {
 										"value": "@item().Domain",
 										"type": "Expression"
+									},
+									"storageAccName": {
+										"value": "@item().StorageAccName",
+										"type": "Expression"
+									},
+									"srcContainerName": {
+										"value": "@item().SrcContainerName",
+										"type": "Expression"
 									}
 								}
 							},
