@@ -32,6 +32,73 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "ForEach_Landling_File",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup_Bronze_Control_Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup_Bronze_Control_Table').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Notebook_landing_bronze",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/landing_bronze_load/bronze_sql/03nb_landing_bronze_load",
+								"baseParameters": {
+									"domain": {
+										"value": "@item().Domain",
+										"type": "Expression"
+									},
+									"storageAccName": {
+										"value": "@item().StorageAccName",
+										"type": "Expression"
+									},
+									"srcContainerName": {
+										"value": "@item().SrcContainerName",
+										"type": "Expression"
+									},
+									"tgtCatalog": {
+										"value": "@item().TgtContainerName",
+										"type": "Expression"
+									},
+									"tgtSchema": {
+										"value": "@item().TgtSchema",
+										"type": "Expression"
+									},
+									"tgtTableName": {
+										"value": "@item().TgtTableName",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_AzureDatabricks",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
 			}
 		],
 		"folder": {
