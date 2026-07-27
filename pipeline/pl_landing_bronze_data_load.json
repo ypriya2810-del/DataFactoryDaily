@@ -81,6 +81,14 @@
 									"tgtCatalog": {
 										"value": "@item().TgtCatalog",
 										"type": "Expression"
+									},
+									"tgtSchema": {
+										"value": "@item().TgtSchema",
+										"type": "Expression"
+									},
+									"tgtTableName": {
+										"value": "@item().TgtTableName",
+										"type": "Expression"
 									}
 								}
 							},
