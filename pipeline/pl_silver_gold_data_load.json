@@ -1,0 +1,9 @@
+{
+	"name": "pl_silver_gold_data_load",
+	"properties": {
+		"folder": {
+			"name": "dev_clintrail/silver_gold_dim_load"
+		},
+		"annotations": []
+	}
+}
