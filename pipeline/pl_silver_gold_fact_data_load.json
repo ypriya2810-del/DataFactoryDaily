@@ -83,6 +83,10 @@
 							"typeProperties": {
 								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/silver_gold_load/gold_sql/nb_gold_facts",
 								"baseParameters": {
+									"entityName": {
+										"value": "@item().EntityName",
+										"type": "Expression"
+									},
 									"srcCatalog": {
 										"value": "@item().SrcCatalog",
 										"type": "Expression"
@@ -105,10 +109,6 @@
 									},
 									"tgtTableName": {
 										"value": "@item().TgtTableName",
-										"type": "Expression"
-									},
-									"scdType": {
-										"value": "@item().ScdType",
 										"type": "Expression"
 									},
 									"businessKey": {
