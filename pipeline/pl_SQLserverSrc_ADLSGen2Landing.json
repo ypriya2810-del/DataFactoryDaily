@@ -22,25 +22,7 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sqlserver_source_table_param",
-						"type": "DatasetReference",
-						"parameters": {
-							"pDsSourceServerName": {
-								"value": "localhost\\SQLEXPRESS",
-								"type": "Expression"
-							},
-							"pDsSourceDatabasename": {
-								"value": "dev_clintrail_edc_src",
-								"type": "Expression"
-							},
-							"pDsSourceSchemaName": {
-								"value": "edcsrcmetadata",
-								"type": "Expression"
-							},
-							"pDsSourceTableName": {
-								"value": "srcEdcClintrailToLandControl",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
 				}
