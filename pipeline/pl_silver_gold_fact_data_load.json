@@ -114,6 +114,10 @@
 									"businessKey": {
 										"value": "@item().BusinessKey",
 										"type": "Expression"
+									},
+									"eventDateCol": {
+										"value": "@item().EventDateCol",
+										"type": "Expression"
 									}
 								}
 							},
