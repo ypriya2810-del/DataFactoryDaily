@@ -19,50 +19,94 @@
 				}
 			},
 			{
-				"name": "Execute Pipeline2",
+				"name": "Execute_Pipeline_Landing_Bronze",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Source_Landing",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_landing_bronze_data_load",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			},
 			{
-				"name": "Execute Pipeline3",
+				"name": "Execute_Pipeline_Bronze_Silver",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Landing_Bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_bronze_silver_data_load",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			},
 			{
-				"name": "Execute Pipeline4",
+				"name": "Execute_Pipeline_Silver_Gold",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Bronze_Silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_silver_gold_dim_data_load",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			},
 			{
-				"name": "Execute Pipeline5",
+				"name": "Execute_Pipeline_Silver_Gold_Fact",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Silver_Gold",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_silver_gold_fact_data_load",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			}
