@@ -22,7 +22,25 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sqlserver_source_table_param",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"pDsSourceServerName": {
+								"value": "@pipeline().parameters.pPlServerName",
+								"type": "Expression"
+							},
+							"pDsSourceDatabasename": {
+								"value": "@pipeline().parameters.pPlDatabaseName",
+								"type": "Expression"
+							},
+							"pDsSourceSchemaName": {
+								"value": "@pipeline().parameters.pPlSchemaName",
+								"type": "Expression"
+							},
+							"pDsSourceTableName": {
+								"value": "@pipeline().parameters.pPlTableName",
+								"type": "Expression"
+							}
+						}
 					},
 					"firstRowOnly": false
 				}
