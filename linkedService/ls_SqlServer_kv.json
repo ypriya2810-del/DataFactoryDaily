@@ -1,0 +1,27 @@
+{
+	"name": "ls_SqlServer_kv",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "localhost\\SQLEXPRESS",
+			"database": "dev_healthConnect_raw",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "adf_login",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault_SqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "kv-sqlserver-password"
+			}
+		},
+		"connectVia": {
+			"referenceName": "shir-local-compute",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

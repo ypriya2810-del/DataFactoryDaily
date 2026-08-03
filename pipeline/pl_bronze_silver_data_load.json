@@ -1,0 +1,152 @@
+{
+	"name": "pl_bronze_silver_data_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_Bronze_Silver_ControlTable",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 3,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT * FROM [', pipeline().parameters.pPlSchemaName, '].[', pipeline().parameters.pPlTableName, '] WHERE Enabled = ''True''')\r\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqlserver_source_table_param",
+						"type": "DatasetReference",
+						"parameters": {
+							"pDsSourceServerName": {
+								"value": "@pipeline().parameters.pPlServerName",
+								"type": "Expression"
+							},
+							"pDsSourceDatabasename": {
+								"value": "@pipeline().parameters.pPlDatabaseName",
+								"type": "Expression"
+							},
+							"pDsSourceSchemaName": {
+								"value": "@pipeline().parameters.pPlSchemaName",
+								"type": "Expression"
+							},
+							"pDsSourceTableName": {
+								"value": "@pipeline().parameters.pPlTableName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach_Domain_Table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup_Bronze_Silver_ControlTable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup_Bronze_Silver_ControlTable').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Notebook_Domain",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/y.priya2810@gmail.com/intellibi_clinicaltrial_databricks/bronze_silver_load/silver_sql/nb_bronze_silver_load",
+								"baseParameters": {
+									"domain": {
+										"value": "@item().Domain",
+										"type": "Expression"
+									},
+									"srcCatalog": {
+										"value": "@item().SrcCatalog",
+										"type": "Expression"
+									},
+									"srcSchema": {
+										"value": "@item().SrcSchema",
+										"type": "Expression"
+									},
+									"srcTableName": {
+										"value": "@item().SrcTableName",
+										"type": "Expression"
+									},
+									"tgtCatalog": {
+										"value": "@item().TgtCatalog",
+										"type": "Expression"
+									},
+									"tgtSchema": {
+										"value": "@item().TgtSchema",
+										"type": "Expression"
+									},
+									"tgtTableName": {
+										"value": "@item().TgtTableName",
+										"type": "Expression"
+									},
+									"businessKey": {
+										"value": "@item().BusinessKey",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_AzureDatabricks",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"pPlServerName": {
+				"type": "string",
+				"defaultValue": "localhost\\SQLEXPRESS"
+			},
+			"pPlDatabaseName": {
+				"type": "string",
+				"defaultValue": "dev_clintrail_edc_src"
+			},
+			"pPlSchemaName": {
+				"type": "string",
+				"defaultValue": "edcsrcmetadata"
+			},
+			"pPlTableName": {
+				"type": "string",
+				"defaultValue": "srcEdcBronzeToSilverControl"
+			}
+		},
+		"folder": {
+			"name": "dev_clintrail/bronze_silver_load"
+		},
+		"annotations": []
+	}
+}

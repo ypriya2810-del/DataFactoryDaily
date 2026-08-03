@@ -1,0 +1,41 @@
+{
+	"name": "ds_adls_clinical_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_gen_2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"pDsContainerName": {
+				"type": "string"
+			},
+			"pDsFolderName": {
+				"type": "string"
+			},
+			"pDsFileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().pDsFileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().pDsFolderName",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().pDsContainerName",
+					"type": "Expression"
+				}
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

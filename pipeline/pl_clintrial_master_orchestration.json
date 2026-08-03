@@ -1,0 +1,27 @@
+{
+	"name": "pl_clintrial_master_orchestration",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute_Pipeline_Clintrial_Master_Orchestration",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_clintrial_master",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "dev_clintrail/clin_trial_master"
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,119 @@
+{
+	"name": "pl_clintrial_master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute_Pipeline_Source_Landing",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_SQLserverSrc_ADLSGen2Landing",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute_Pipeline_Landing_Bronze",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Source_Landing",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_landing_bronze_data_load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute_Pipeline_Bronze_Silver",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Landing_Bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_bronze_silver_data_load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute_Pipeline_Silver_Gold",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Bronze_Silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_silver_gold_dim_data_load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute_Pipeline_Silver_Gold_Fact",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute_Pipeline_Silver_Gold",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_silver_gold_fact_data_load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "dev_clintrail/clin_trial_master"
+		},
+		"annotations": []
+	}
+}

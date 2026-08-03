@@ -1,9 +1,9 @@
 {
-	"name": "pl_dm_adls_azuresqldb_load20260613_3",
+	"name": "pl_sales_adls_sink_load_behaviourflatten_2",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_dm_adls_azuresqldb",
+				"name": "Copy_sales_adls_sink_load_behaviour",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -20,6 +20,8 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "sourcefiles/sales/",
+							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -27,11 +29,16 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -45,23 +52,21 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_dm_adls_csv",
+						"referenceName": "ds_sales_adls",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_dm_adls_azuresqldb",
+						"referenceName": "ds_targetfiles_folder_sales_adls",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"folder": {
-			"name": "practice_files/azuresql_adls_raw_load"
+			"name": "practice_files/sales_20260618"
 		},
-		"annotations": [],
-		"lastPublishTime": "2026-07-18T19:03:20Z"
-	},
-	"type": "Microsoft.DataFactory/factories/pipelines"
+		"annotations": []
+	}
 }

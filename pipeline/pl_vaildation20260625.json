@@ -1,0 +1,25 @@
+{
+	"name": "pl_vaildation20260625",
+	"properties": {
+		"activities": [
+			{
+				"name": "ValidationSourceFile",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_adls_source_files_validation",
+						"type": "DatasetReference"
+					},
+					"timeout": "0.00:30:00",
+					"sleep": 20
+				}
+			}
+		],
+		"folder": {
+			"name": "practice_files/Validation20260625"
+		},
+		"annotations": []
+	}
+}

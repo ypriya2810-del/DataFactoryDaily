@@ -1,0 +1,6 @@
+{
+	"name": "shir-local-compute",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

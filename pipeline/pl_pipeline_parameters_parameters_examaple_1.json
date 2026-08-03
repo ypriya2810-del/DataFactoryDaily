@@ -1,9 +1,9 @@
 {
-	"name": "pl_dm_adls_azuresqldb_load20260613_3",
+	"name": "pl_pipeline_parameters_parameters_examaple_1",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_dm_adls_azuresqldb",
+				"name": "Copy_Source_Sales_Target",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -27,11 +27,15 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -45,23 +49,21 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_dm_adls_csv",
+						"referenceName": "ds_adlssourcefiles_sales",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_dm_adls_azuresqldb",
+						"referenceName": "ds_adls_tagetfiles_sales",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"folder": {
-			"name": "practice_files/azuresql_adls_raw_load"
+			"name": "practice_files/Parameters20260626"
 		},
-		"annotations": [],
-		"lastPublishTime": "2026-07-18T19:03:20Z"
-	},
-	"type": "Microsoft.DataFactory/factories/pipelines"
+		"annotations": []
+	}
 }

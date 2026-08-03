@@ -1,0 +1,136 @@
+{
+	"name": "pl_pipeline_parameter_file_3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_Source_Target_Details",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_lkp_source_target_details",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachSourceTargetDetails",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup_Source_Target_Details",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup_Source_Target_Details').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_adls_bin_sourcefiles",
+									"type": "DatasetReference",
+									"parameters": {
+										"pDsSourceContainerName": {
+											"value": "@item().SourceContainerName",
+											"type": "Expression"
+										},
+										"pDsSourceFolderPath": {
+											"value": "@item().SourceFolderPath",
+											"type": "Expression"
+										},
+										"pDsSourcefilename": {
+											"value": "@item().SourceFilename",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_adls_bin_targetfiles",
+									"type": "DatasetReference",
+									"parameters": {
+										"pDsTargetContainerName": {
+											"value": "@item().TargetContainerName",
+											"type": "Expression"
+										},
+										"pDsTargetFolderName": {
+											"value": "@item().TargetFolderPath",
+											"type": "Expression"
+										},
+										"pDsTargetFilename": {
+											"value": "@item().TargetFilename",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "practice_files/Parameters20260626"
+		},
+		"annotations": []
+	}
+}

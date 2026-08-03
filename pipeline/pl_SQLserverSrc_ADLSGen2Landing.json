@@ -1,0 +1,298 @@
+{
+	"name": "pl_SQLserverSrc_ADLSGen2Landing",
+	"properties": {
+		"activities": [
+			{
+				"name": "LookupSQLServerControlTable",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 3,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqlserver_source_table_param",
+						"type": "DatasetReference",
+						"parameters": {
+							"pDsSourceServerName": {
+								"value": "@pipeline().parameters.pPlServerName",
+								"type": "Expression"
+							},
+							"pDsSourceDatabasename": {
+								"value": "@pipeline().parameters.pPlDatabaseName",
+								"type": "Expression"
+							},
+							"pDsSourceSchemaName": {
+								"value": "@pipeline().parameters.pPlSchemaName",
+								"type": "Expression"
+							},
+							"pDsSourceTableName": {
+								"value": "@pipeline().parameters.pPlTableName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupSQLServerControlTable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupSQLServerControlTable').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copydata_sqlserver_landing",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().SrcSchemaName}.@{item().SrcTableName}"
+								},
+								{
+									"name": "Destination",
+									"value": "@{item().LandingContainerName}/@{concat(concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd')), '\n')}/@{concat(concat(item().SrcTableName, '_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet'), '\n')}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@if(equals(item().IngestionType,'Incremental'),\n    concat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName,\n           ' WHERE ',coalesce(item().WatermarkColName,''),\n           ' > ''',coalesce(string(item().WatermarkColValue),''),''''),\n    concat('SELECT * FROM ',item().SrcSchemaName,'.',item().SrcTableName))\n",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sqlserver_source_table_param",
+									"type": "DatasetReference",
+									"parameters": {
+										"pDsSourceServerName": {
+											"value": "@item().SrcServerName",
+											"type": "Expression"
+										},
+										"pDsSourceDatabasename": {
+											"value": "@item().SrcDatabaseName",
+											"type": "Expression"
+										},
+										"pDsSourceSchemaName": {
+											"value": "@item().SrcSchemaName",
+											"type": "Expression"
+										},
+										"pDsSourceTableName": {
+											"value": "@item().SrcTableName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_adls_clinical_param",
+									"type": "DatasetReference",
+									"parameters": {
+										"pDsContainerName": {
+											"value": "@item().LandingContainerName",
+											"type": "Expression"
+										},
+										"pDsFolderName": {
+											"value": "@{concat(item().SrcSchemaName,'/',item().SrcTableName,'/ingest_date=',formatDateTime(utcNow(),'yyyy-MM-dd'))}",
+											"type": "Expression"
+										},
+										"pDsFileName": {
+											"value": "@concat(item().SrcTableName,'_',formatDateTime(utcNow(),'yyyyMMddHHmmss'),'.parquet')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "LookupGetMaxMetaData",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Copydata_sqlserver_landing",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT MAX([', coalesce(item().WatermarkColName,'MODIFIED_TS'),\n        ']) AS NewWatermark FROM ', item().SrcSchemaName, '.', item().SrcTableName)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sqlserver_source_table_param",
+									"type": "DatasetReference",
+									"parameters": {
+										"pDsSourceServerName": {
+											"value": "@item().SrcServerName",
+											"type": "Expression"
+										},
+										"pDsSourceDatabasename": {
+											"value": "@item().SrcDatabaseName",
+											"type": "Expression"
+										},
+										"pDsSourceSchemaName": {
+											"value": "@item().SrcSchemaName",
+											"type": "Expression"
+										},
+										"pDsSourceTableName": {
+											"value": "@item().SrcTableName",
+											"type": "Expression"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "Stored procedureUpdtMxModifiedDt",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "LookupGetMaxMetaData",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": {
+									"value": "[edcsrcmetadata].[usp_UpdateMxWatermark]",
+									"type": "Expression"
+								},
+								"storedProcedureParameters": {
+									"MetadataId": {
+										"value": {
+											"value": "@item().MetadataId",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"NewWatermarkValue": {
+										"value": {
+											"value": "@activity('LookupGetMaxMetaData').output.firstRow.NewWatermark",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sqlserver_param",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"pLsServerName": {
+										"value": "@item().SrcServerName",
+										"type": "Expression"
+									},
+									"pLsDatabasename": {
+										"value": "@item().SrcDatabaseName",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"pPlServerName": {
+				"type": "string",
+				"defaultValue": "localhost\\SQLEXPRESS"
+			},
+			"pPlDatabaseName": {
+				"type": "string",
+				"defaultValue": "dev_clintrail_edc_src"
+			},
+			"pPlSchemaName": {
+				"type": "string",
+				"defaultValue": "edcsrcmetadata"
+			},
+			"pPlTableName": {
+				"type": "string",
+				"defaultValue": "srcEdcClintrailToLandControl"
+			}
+		},
+		"folder": {
+			"name": "dev_clintrail/SQLServerSrc_ADLSGen2Landing"
+		},
+		"annotations": []
+	}
+}
